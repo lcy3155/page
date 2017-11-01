@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script src="../../js/jquery-1.11.3.js"></script>-->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <style>
+         .box{
+             width: 1000px;
+             height: 300px;
+             border: 1px solid #111;
+             margin: 0 auto;
+         }
+        .box1{
+            width: 200px;
+            height: 50px;
+            margin: 0 auto;
+            padding-top: 10px;
+            box-sizing: border-box;
+        }
+         .box1 button {
+             display: block;
+             float: left;
+             width: 30px;
+             line-height: 30px;
+             text-align: center;
+             border: 1px solid #000000;
+             box-sizing: border-box;
+             margin-left: 10px;
+         }
+        .box2 p{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+      <div class="box1"></div>
+    <div class="box2"></div>
+</div>
+<script>
+    $(function(){
+        $.ajax({
+            url:"http://localhost:3000/item/count",
+            type:"POST",
+            success:function(e){
+                var num=Math.ceil(e[0].jgr/4)
+                console.log(num)
+                for(var i=1;i<=num;i++){
+                   $(".box1").append('<button>'+i+'</button>')
+                }
+                $('button').click(function(){
+                    //var e=$(this).attr('data-id')
+                    var e=parseInt($(this).html())
+                    locd(e)
+                })
+           }
+        })
+        locd(1)
+        function locd(e){
+            $.ajax({
+                url:"http://localhost:3000/item/page" ,
+                type:"POST",
+                data:{num:e},
+                success:function(e){
+                    var string=''
+                    for(i in e){
+                        string+="<p>"+ e[i].datel+"</p>"
+                    }
+                    $('.box2').html(string)
+                }
+            })
+        }
+
+
+//                var q=JSON.stringify(e[0]).split(':')[1].split('}')[0]
+
+
+    })
+
+</script>
+
+</body>
+</html>
